@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+	<html>
+	<head>
+		<title>Photo Search</title>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+		<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+			
+	</head>
+	
+	
+	<body style="padding-top: 70px;">
+	<!-- Container -->
+		<div class="container-fluid">
+
+		<!-- Header -->
+		
+		<div class='text-center navbar-fixed-top' style="color: white; background-color: blue;"><h2>Flickr Photo Search</h2>
+		
+		</div> <!-- end jumbo -->
+		
+	  
+		<!-- The Photos from click are placed here! -->
+			<div class="panel panel-default">
+			  <div class="panel-header"></div>
+			  <div class="panel-body" id="photoDiv" style="height: calc(100vh - 185px); overflow-y:scroll; width:100%; align-content: center;">
+			  		adhakhdkas
+			  </div>
+			</div>
+			
+
+			
+
+			<div class="footer navbar-fixed-bottom text-center" style="text-align: center; color: white; background-color: deeppink;">
+        		<br>
+        		<div class="col-xs-4"></div>
+        		<div class="col-xs-4 centered">
+				
+					    <div class="input-group">
+						      <input type="text" id='photoText' style="width: 100" class="form-control" placeholder="Search for...">
+						      <span class="input-group-btn">
+						        <input type="button" value="Search" class="btn btn-default" id="photoButton"></input>
+						      </span> 
+					    </div><!-- /input-group -->
+						<br><p>Copyright&#169 2016 John Riepe<p>
+				</div> <!-- end <div class="container"> -->
+			</div> <!-- end <div footer> -->
+	
+
+
+
+		<!-- Begin Script -->
+			
+			<script>
+    		$('#photoButton').on('click', function() {
+
+		        getPhotos();
+				return false;
+		    });
+
+	        function getPhotos(){
+	        	var photoSearch = $('#photoText').val();
+		        $('.panel-header').html("Search Term: "+photoSearch);
+		        console.log('photoSearch: ' + photoSearch);
+		        
+		        var myApiKey = 'e418a4ea3dbe625f00887419dedb824b';
+		        var queryUrl = "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key="+myApiKey+"&text=photoSearch&safe_search=1&privacy_filter=1&per_page=25&format=json";
+		        console.log("URL: " + queryUrl);
+	
+		        $('#photoDiv').empty();
+		        $.ajax({
+		        		url: queryUrl,
+		        		method: 'GET'
+		        })
+		        .done(function(response) {
+						
+		                //--------------------------------
+		                var data = response.photos;
+		                console.log(data.photo[0].id);
+		     //            for (var i in data) {
+							// var photoId = data.photos.photo[i].id;
+		     //                console.log("photoId: "+photoId);
+		     //                $('#photoDiv').append("ID: "+photoId+"</br>");
+
+		     //            };
+		   
+
+		               });
+	        }
+		        
+		        	
+		        
+
+		    
+    </script>
+		<!-- End Script -->		
+
+
+				
+		
+	</body>
+</html>
