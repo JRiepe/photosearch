@@ -88,8 +88,8 @@
 				$.getJSON(queryUrl, function(data){
 				    $.each(data.photos.photo, function(i,item){
 				        console.log(data);
-				        src = "http://farm"+ item.farm +".static.flickr.com/"+ item.server +"/"+ item.id +"_"+ item.secret +"_m.jpg";
-				        $("<img />").attr("style", 'height: calc(100vh - 185px); max-width: 100%').attr("src", src).appendTo("#photoDiv");
+				        src = "http://farm"+ item.farm +".static.flickr.com/"+ item.server +"/"+ item.id +"_"+ item.secret +".jpg";
+				        $("<img />").attr("style", 'height: 100%; max-width: 100%; width: auto; object-fit: contain; padding:5px').attr("src", src).appendTo("#photoDiv");
 				        $('<br>').appendTo("#photoDiv");
 				        
 				    });
