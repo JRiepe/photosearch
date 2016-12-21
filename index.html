@@ -1,3 +1,8 @@
+
+
+<!-- Program developed by John Riepe 2016 -->
+
+
 <!DOCTYPE html>
 	<html>
 	<head>
@@ -13,90 +18,87 @@
 	<!-- Container -->
 		<div class="container-fluid">
 
-		<!-- Header -->
+		<!-- Header/Navbar -->
 		
 		<div class='text-center navbar-fixed-top' style="color: white; background-color: blue;"><h2>Flickr Photo Search</h2>
 		
-		</div> <!-- end jumbo -->
+		</div> <!-- end Header -->
 		
 	  
-		<!-- The Photos from click are placed here! -->
+		<!-- The Photos from click/enter are placed here! -->
 			<div class="panel panel-default">
 			  <div class="panel-header"></div>
-			  <div class="panel-body" id="photoDiv" style="height: calc(100vh - 185px); overflow-y:scroll; width:100%; align-content: center;">
-			  		adhakhdkas
+			  <div class="panel-body text-center" id="photoDiv" style="height: calc(100vh - 185px); overflow-y:scroll; width:100%;">
+			  		
 			  </div>
 			</div>
-			
+		<!-- End Photos from click/enter -->
 
 			
-
+		<!-- Footer/Searchbar -->
 			<div class="footer navbar-fixed-bottom text-center" style="text-align: center; color: white; background-color: deeppink;">
         		<br>
         		<div class="col-xs-4"></div>
         		<div class="col-xs-4 centered">
-				
+					<!-- input-group -->
 					    <div class="input-group">
 						      <input type="text" id='photoText' style="width: 100" class="form-control" placeholder="Search for...">
 						      <span class="input-group-btn">
 						        <input type="button" value="Search" class="btn btn-default" id="photoButton"></input>
 						      </span> 
-					    </div><!-- /input-group -->
+					    </div>
 						<br><p>Copyright&#169 2016 John Riepe<p>
-				</div> <!-- end <div class="container"> -->
-			</div> <!-- end <div footer> -->
+					<!-- end input-group -->
+				</div> 
+			</div>
+		<!-- end <div footer> -->
 	
 
 
 
 		<!-- Begin Script -->
 			
-			<script>
+		<script>
+    		
+			// on click Search button
     		$('#photoButton').on('click', function() {
-
-		        getPhotos();
-				return false;
+		        getPhotos();			
 		    });
 
+    		// on <ENTER> Search
+	        $("#photoText").on('keyup', function (e) {
+			    if (e.keyCode == 13) {
+			        getPhotos();
+			    }
+			});
+
+
+    		// function calls flickr with search term and returns photos
 	        function getPhotos(){
 	        	var photoSearch = $('#photoText').val();
 		        $('.panel-header').html("Search Term: "+photoSearch);
 		        console.log('photoSearch: ' + photoSearch);
 		        
 		        var myApiKey = 'e418a4ea3dbe625f00887419dedb824b';
-		        var queryUrl = "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key="+myApiKey+"&text=photoSearch&safe_search=1&privacy_filter=1&per_page=25&format=json";
+		        var queryUrl = "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key="+myApiKey+"&text="+photoSearch+"&safe_search=1&privacy_filter=1&per_page=25&format=json&jsoncallback=?";
 		        console.log("URL: " + queryUrl);
 	
-		        $('#photoDiv').empty();
-		        $.ajax({
-		        		url: queryUrl,
-		        		method: 'GET'
-		        })
-		        .done(function(response) {
-						
-		                //--------------------------------
-		                var data = response.photos;
-		                console.log(data.photo[0].id);
-		     //            for (var i in data) {
-							// var photoId = data.photos.photo[i].id;
-		     //                console.log("photoId: "+photoId);
-		     //                $('#photoDiv').append("ID: "+photoId+"</br>");
-
-		     //            };
-		   
-
-		               });
+		        $('#photoDiv').empty();	        
+				var src;
+				$.getJSON(queryUrl, function(data){
+				    $.each(data.photos.photo, function(i,item){
+				        console.log(data);
+				        src = "http://farm"+ item.farm +".static.flickr.com/"+ item.server +"/"+ item.id +"_"+ item.secret +"_m.jpg";
+				        $("<img />").attr("style", 'height: calc(100vh - 185px); max-width: 100%').attr("src", src).appendTo("#photoDiv");
+				        $('<br>').appendTo("#photoDiv");
+				        
+				    });
+				});
+		              		             
 	        }
-		        
-		        	
-		        
-
-		    
-    </script>
-		<!-- End Script -->		
-
-
-				
+		        	        	  
+    	</script>
+		<!-- End Script -->					
 		
 	</body>
 </html>
